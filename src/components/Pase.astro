@@ -1,0 +1,330 @@
+---
+// Pase.astro
+import { tamanoNombre, frasePases } from "../lib/pase";
+
+interface Props {
+    numeroPases: number;
+    nombreInvitado?: string;
+}
+
+const { numeroPases = 1, nombreInvitado = "" } = Astro.props;
+
+// Lo que se ve si el link no trae código. Cuando llega el invitado real,
+// el script de abajo reemplaza estos valores.
+const nombreMostrado = nombreInvitado || "Nuestro invitado especial";
+---
+
+<section class="relative w-full pt-10 pb-10 sm:py-20 md:py-24 lg:py-32">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-center">
+            <div class="relative w-[300px]" id="card-pase">
+
+                <!-- BOTÓN DECORATIVO SUPERIOR -->
+                <div
+                    class="absolute z-20"
+                    style="top: -30px; left: 50%; transform: translateX(-50%);"
+                >
+                    <div class="w-16 h-16" id="boton-decorativo-pase">
+                        <img
+                            src="/imagenes/boton.png"
+                            alt="Decoración"
+                            class="w-full h-full object-contain"
+                        />
+                    </div>
+                </div>
+
+                <!-- CARD PRINCIPAL -->
+                <div
+                    class="relative rounded-[40px] shadow-xl overflow-hidden"
+                    id="card-principal-pase"
+                >
+                    <!-- IMAGEN DE FONDO -->
+                    <img
+                        src="/imagenes/azul.png"
+                        alt="Fondo pase"
+                        class="absolute inset-0 w-full h-full object-cover"
+                    />
+
+                    <!-- Contenido de la card -->
+                    <div class="relative px-6 pt-14 pb-10 z-10 text-center">
+
+                        <!-- ENCABEZADO + NOMBRE DEL INVITADO -->
+                        <div class="relative mb-6" id="encabezado-pase">
+                            <p
+                                class="font-crimson text-sm sm:text-base uppercase tracking-[0.2em] text-white/75 leading-relaxed"
+                            >
+                                Invitación con<br />mucho cariño para
+                            </p>
+                            <p
+                                class="font-great-vibes text-white leading-tight mt-3"
+                                id="nombre-invitado"
+                                style={`font-size: ${tamanoNombre(nombreMostrado)}; text-shadow: 0 4px 14px rgba(0,0,0,0.25);`}
+                            >
+                                {nombreMostrado}
+                            </p>
+                        </div>
+
+                        <!-- SEPARADOR ORNAMENTAL -->
+                        <div
+                            class="relative flex items-center justify-center gap-3 mb-6"
+                        >
+                            <div
+                                class="w-12 h-px bg-gradient-to-r from-transparent to-white/50"
+                            >
+                            </div>
+                            <div class="text-white/60 text-xs">&#10022;</div>
+                            <div
+                                class="w-12 h-px bg-gradient-to-l from-transparent to-white/50"
+                            >
+                            </div>
+                        </div>
+
+                        <!-- NÚMERO DE PASES -->
+                        <div class="relative mb-5" id="numero-pase">
+                            <p
+                                class="font-crimson text-sm sm:text-base uppercase tracking-[0.22em] text-white/75 font-semibold mb-3"
+                            >
+                                Pases asignados
+                            </p>
+                            <div
+                                class="mx-auto w-24 h-24 rounded-full border border-white/35 bg-white/10 flex items-center justify-center"
+                            >
+                                <span
+                                    class="text-white font-bold leading-none"
+                                    id="numero-pases"
+                                    style="font-size: 3.25rem; text-shadow: 0 4px 16px rgba(0,0,0,0.2);"
+                                >
+                                    {numeroPases}
+                                </span>
+                            </div>
+                            <p
+                                class="font-crimson text-sm uppercase tracking-[0.3em] text-white/80 mt-3"
+                                id="palabra-pases"
+                            >
+                                {numeroPases === 1 ? "Pase" : "Pases"}
+                            </p>
+                        </div>
+
+                        <!-- TEXTO DESCRIPTIVO -->
+                        <div class="relative" id="texto-pase">
+                            <p
+                                class="font-crimson text-lg leading-relaxed text-white/90 italic"
+                            >
+                                {frasePases(numeroPases)}
+                            </p>
+                        </div>
+
+                        <!-- ICONOS DE PERSONAS -->
+                        <div
+                            class="relative flex justify-center gap-3 mt-6"
+                            id="iconos-pase"
+                        >
+                            {
+                                Array.from({ length: numeroPases }).map((_, index) => (
+                                    <div
+                                        class="w-9 h-9 rounded-full bg-white/20 border border-white/40 flex items-center justify-center"
+                                        style={`animation-delay: ${index * 0.2}s;`}
+                                    >
+                                        <svg
+                                            class="w-5 h-5 text-white"
+                                            fill="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                        </svg>
+                                    </div>
+                                ))
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import { datosInvitado, alCambiarInvitado } from "../lib/invitado";
+    import { tamanoNombre, frasePases } from "../lib/pase";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ═══════════════════════════════════════════════════════════
+    // 🎟️ PASE PERSONALIZADO
+    // El link trae solo un código (?i=k7m2p); el nombre y los pases viven
+    // en la base. Si los novios corrigen un nombre en el panel, el link YA
+    // ENVIADO muestra el nombre corregido sin volver a mandar nada.
+    // ═══════════════════════════════════════════════════════════
+
+    function pintarPase(nombre, pases) {
+        if (nombre) {
+            const el = document.getElementById("nombre-invitado");
+            if (el) {
+                el.textContent = nombre;
+                // Misma escala que usó el servidor, o el nombre saltaría de
+                // tamaño al cargar. El salto de línea queda libre: un nombre
+                // largo baja de renglón en vez de volverse ilegible.
+                el.style.fontSize = tamanoNombre(nombre);
+            }
+        }
+
+        if (!Number.isInteger(pases) || pases <= 0) return;
+
+        const num = document.getElementById("numero-pases");
+        if (num) num.textContent = String(pases);
+
+        const palabra = document.getElementById("palabra-pases");
+        if (palabra) palabra.textContent = pases === 1 ? "Pase" : "Pases";
+
+        const frase = document.querySelector("#texto-pase p");
+        if (frase) frase.textContent = frasePases(pases);
+
+        // Los monigotes tienen que coincidir con el número
+        const iconos = document.getElementById("iconos-pase");
+        const molde = iconos && iconos.firstElementChild;
+        if (molde) {
+            const copias = [];
+            for (let i = 0; i < pases; i++) {
+                const copia = molde.cloneNode(true);
+                copia.style.animationDelay = i * 0.2 + "s";
+                copias.push(copia);
+            }
+            iconos.replaceChildren(...copias);
+        }
+    }
+
+    function mostrarInvitado(inv) {
+        if (!inv) return;
+
+        // Hay bodas que no contratan pases: su tarjeta muestra solo el
+        // nombre. Sin esto quedaría un "1 pase" inventado.
+        if (inv.funciones && inv.funciones.pases === false) {
+            for (const id of ["numero-pase", "texto-pase", "iconos-pase"]) {
+                const el = document.getElementById(id);
+                if (el) el.style.display = "none";
+            }
+            pintarPase(inv.nombre, null);
+            return;
+        }
+
+        pintarPase(inv.nombre, inv.pases);
+    }
+
+    if (typeof window !== "undefined") {
+        // Sin código en el link devuelve null enseguida y la tarjeta se
+        // queda con los valores por defecto.
+        datosInvitado().then(mostrarInvitado);
+        alCambiarInvitado(mostrarInvitado);
+    }
+
+    if (typeof window !== "undefined") {
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.fromTo(
+                "#boton-decorativo-pase",
+                { opacity: 0, scale: 0, rotation: -180 },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    rotation: 0,
+                    duration: 1,
+                    ease: "back.out(1.7)",
+                    scrollTrigger: {
+                        trigger: "#card-pase",
+                        start: "top 80%",
+                        toggleActions: "play none none reset",
+                    },
+                },
+            );
+
+            gsap.fromTo(
+                "#card-principal-pase",
+                { opacity: 0, y: 50, scale: 0.95 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: "#card-pase",
+                        start: "top 80%",
+                        toggleActions: "play none none reset",
+                    },
+                },
+            );
+
+            gsap.fromTo(
+                "#encabezado-pase",
+                { opacity: 0, y: -20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: "#card-pase",
+                        start: "top 80%",
+                        toggleActions: "play none none reset",
+                    },
+                },
+            );
+
+            gsap.fromTo(
+                "#numero-pase",
+                { opacity: 0, scale: 0.8 },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 1,
+                    delay: 0.2,
+                    ease: "back.out(1.4)",
+                    scrollTrigger: {
+                        trigger: "#card-pase",
+                        start: "top 80%",
+                        toggleActions: "play none none reset",
+                    },
+                },
+            );
+
+            gsap.fromTo(
+                "#texto-pase",
+                { opacity: 0, y: 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    delay: 0.4,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: "#card-pase",
+                        start: "top 80%",
+                        toggleActions: "play none none reset",
+                    },
+                },
+            );
+
+            gsap.fromTo(
+                "#iconos-pase",
+                { opacity: 0, y: 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    delay: 0.6,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: "#card-pase",
+                        start: "top 80%",
+                        toggleActions: "play none none reset",
+                    },
+                },
+            );
+        });
+    }
+</script>
