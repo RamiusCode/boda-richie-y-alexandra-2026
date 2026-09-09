@@ -9,21 +9,25 @@
 /**
  * Cuerpo de letra del nombre del invitado.
  *
- * El nombre NO se fuerza a una sola línea: un "Familia Rodríguez Fernández"
- * baja de renglón, que se lee mucho mejor que achicarlo hasta lo ilegible.
- * Estos tramos solo evitan que un nombre muy largo se coma la tarjeta.
+ * La idea es que un nombre corriente —"Familia Flores"— entre en UNA línea,
+ * y que solo baje de renglón cuando de verdad no queda otra. No se achica
+ * hasta lo ilegible: pasado cierto largo, se prefiere el salto de línea.
+ *
+ * Los tramos están calibrados para el ancho útil de la tarjeta (300px menos
+ * el padding, con el nombre estirado a los costados con -mx-3).
  */
 export function tamanoNombre(nombre: string): string {
   const largo = nombre.trim().length;
-  if (largo <= 16) return "3rem";
-  if (largo <= 28) return "2.5rem";
-  if (largo <= 42) return "2.1rem";
-  return "1.8rem";
+  if (largo <= 14) return "2.6rem";
+  if (largo <= 20) return "2.3rem";
+  if (largo <= 30) return "2rem";
+  if (largo <= 42) return "1.75rem";
+  return "1.55rem";
 }
 
 /** La frase de abajo de la tarjeta. Una sola vez, para que no se pierda el número. */
 export function frasePases(pases: number): string {
-  if (pases === 1) return "Esperamos contar con tu presencia";
-  if (pases === 2) return "Esperamos contar con la presencia de ambos";
-  return `Esperamos contar con la presencia de los ${pases}`;
+  return pases === 1
+    ? "Esperamos contar con tu presencia"
+    : "Esperamos contar con su presencia";
 }
