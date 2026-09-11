@@ -8,7 +8,7 @@
                 id="foto1"
                 class="relative w-full aspect-[4/5] rounded-lg shadow-xl overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
                 data-aos="fade-right"
-                data-aos-duration="1800"
+                data-aos-duration="800"
                 data-aos-delay="100"
             >
                 <img
@@ -22,8 +22,8 @@
                 id="foto2"
                 class="absolute bottom-0 right-2 w-[45%] aspect-[4/5] rounded-lg shadow-lg overflow-hidden cursor-pointer translate-x-6 translate-y-6 transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
                 data-aos="fade-left"
-                data-aos-duration="1800"
-                data-aos-delay="450"
+                data-aos-duration="800"
+                data-aos-delay="300"
             >
                 <img
                     src="/imagenes/foto2.webp"
@@ -79,40 +79,13 @@
 <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"
 ></script>
 
-<style>
-    /* Recorrido corto para la entrada de las fotos */
-    #foto1[data-aos] {
-        transform: translate3d(-32px, 0, 0);
-    }
-    #foto2[data-aos] {
-        transform: translate3d(32px, 0, 0);
-    }
-    #foto1[data-aos].aos-animate,
-    #foto2[data-aos].aos-animate {
-        transform: translate3d(0, 0, 0);
-    }
-
-    /* La foto entra ampliada y vuelve despacio a su tamaño, como una cámara
-       que se aleja. Va sobre la imagen y no sobre el recuadro, así el
-       deslizamiento de los costados sigue intacto. */
-    #foto1 img,
-    #foto2 img {
-        transform: scale(1.3);
-        transition: transform 2.6s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    #foto1.aos-animate img,
-    #foto2.aos-animate img {
-        transform: scale(1);
-    }
-</style>
-
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- 📜 JAVASCRIPT PARA EL MODAL Y ANIMACIONES                   -->
 <!-- ═══════════════════════════════════════════════════════════ -->
 <script is:inline>
     AOS.init({
-        duration: 1800,
-        easing: "ease-out-cubic",
+        duration: 1400,
+        easing: "ease-out-sine",
         once: false,
         mirror: true,
         offset: 100,

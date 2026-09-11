@@ -12,14 +12,12 @@
                     id="marco-foto"
                 >
                     <!-- IMAGEN COMPLETA (SIN RECORTE) -->
-                    <div class="overflow-hidden" id="recuadro-foto">
-                        <img
-                            src="/imagenes/foto3.webp"
-                            alt="Foto"
-                            class="w-full h-auto object-contain block"
-                            id="foto-unica"
-                        />
-                    </div>
+                    <img
+                        src="/imagenes/foto3.webp"
+                        alt="Foto"
+                        class="w-full h-auto object-contain block"
+                        id="foto-unica"
+                    />
 
                     <!-- FIRMA DECORATIVA -->
                     <p
@@ -76,31 +74,13 @@
             // Animación de entrada del marco
             gsap.fromTo(
                 "#card-foto",
-                { opacity: 0, y: 40 },
+                { opacity: 0, y: 50, scale: 0.95 },
                 {
                     opacity: 1,
                     y: 0,
-                    duration: 1.2,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: "#card-foto",
-                        start: "top 85%",
-                        toggleActions: "play none none reset",
-                    },
-                },
-            );
-
-            // ═══ LA FOTO SE ACERCA Y SE VA ASENTANDO ═══
-            // Entra ampliada y vuelve despacio a su tamaño, como una cámara
-            // que se aleja. Lento a propósito: la gracia está en que casi no
-            // se note el movimiento, solo que la imagen "se acomoda".
-            gsap.fromTo(
-                "#foto-unica",
-                { scale: 1.3 },
-                {
                     scale: 1,
-                    duration: 2.6,
-                    ease: "power2.out",
+                    duration: 1,
+                    ease: "power3.out",
                     scrollTrigger: {
                         trigger: "#card-foto",
                         start: "top 85%",
